@@ -11,6 +11,15 @@
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
+import grails.plugin.springsecurity.SecurityConfigType
+
+import net.hedtech.banner.configuration.ApplicationConfigurationUtils as ConfigFinder
+grails.config.locations = [] // leave this initialized to an empty list, and add your locations in the map below.
+def locationAdder = ConfigFinder.&addLocation.curry( grails.config.locations )
+grails.config.locations << [BANNER_APP_CONFIG: "banner_configuration.groovy",
+                            NEWAPP_CONFIG: "myApp_configuration.groovy"
+].each { envName, defaultFileName -> locationAdder(envName, defaultFileName) }
+
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)

@@ -5,6 +5,27 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.work.dir = "target/work"
 grails.project.target.level = 1.6
 grails.project.source.level = 1.6
+
+grails.plugin.location.'i18n-core'="plugins/i18n_core.git"
+grails.plugin.location.'banner-core'="plugins/banner_core.git"
+grails.plugin.location.'banner-ui-ss'="plugins/banner_ui_ss.git"
+grails.plugin.location.'sghe-aurora'="plugins/sghe_aurora.git"
+grails.plugin.location.'banner-general-common' = "plugins/banner_general_common.git"
+grails.plugin.location.'banner-student-common' = "plugins/banner_student_common.git"
+grails.plugin.location.'banner-student-validation' = "plugins/banner_student_validation.git"
+grails.plugin.location.'banner-general-person' = "plugins/banner_general_person.git"
+grails.plugin.location.'banner-accountsreceivable-common' = "plugins/banner_accountsreceivable_common.git"
+grails.plugin.location.'banner-student-faculty' = "plugins/banner_student_faculty.git"
+//BANNER 2.5.0 Support
+grails.plugin.location.'grails-constraints' = "plugins/grails_constraints.git"
+grails.plugin.location.'banner-spring-security-cas' = "plugins/banner_spring_security_cas.git"
+grails.plugin.location.'banner-spring-security-saml'   = "plugins/banner_spring_security_saml.git"
+//FOR UI and 2.5.0 configuration
+grails.plugin.location.'web-app-extensibility'="plugins/web-app-extensibility.git"
+grails.plugin.location.'banner_general_utility' = "plugins/banner_general_utility.git"
+grails.plugin.location.'domain-extension'                 = "plugins/domain_extension.git"
+grails.plugin.location.'banner-general-validation-common' = "plugins/banner_general_validation_common.git"
+
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 grails.project.fork = [
@@ -22,55 +43,33 @@ grails.project.fork = [
 ]
 
 grails.project.dependency.resolver = "maven" // or ivy
+
 grails.project.dependency.resolution = {
-    // inherit Grails' default dependencies
-    inherits("global") {
-        // specify dependency exclusions here; for example, uncomment this to disable ehcache:
-        // excludes 'ehcache'
-    }
-    log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
-    checksums true // Whether to verify checksums on resolve
-    legacyResolve false // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
+    inherits "global" // inherit Grails' default dependencies
+    log "warn"   // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
 
+    legacyResolve true
     repositories {
-        inherits true // Whether to inherit repository definitions from plugins
-
-        grailsPlugins()
-        grailsHome()
-        mavenLocal()
+        if (System.properties['PROXY_SERVER_NAME']) {
+            mavenRepo "${System.properties['PROXY_SERVER_NAME']}"
+        }
         grailsCentral()
         mavenCentral()
-        // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
-        //mavenRepo "http://repository.codehaus.org"
-        //mavenRepo "http://download.java.net/maven/2/"
-        //mavenRepo "http://repository.jboss.com/maven2/"
-    }
-
-    dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
-        // runtime 'mysql:mysql-connector-java:5.1.29'
-        // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
-        test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
+        mavenRepo "http://repository.jboss.org/maven2/"
+        mavenRepo "http://repo.grails.org/grails/repo"
+        mavenRepo "http://download.java.net/maven/2/"
     }
 
     plugins {
-        // plugins for the build system only
-        build ":tomcat:7.0.55.2" // or ":tomcat:8.0.20"
-
-        // plugins for the compile step
-        compile ":scaffolding:2.1.2"
-        compile ':cache:1.1.8'
-        compile ":asset-pipeline:2.1.5"
-
-        // plugins needed at runtime but not for compilation
-        runtime ":hibernate4:4.3.8.1" // or ":hibernate:3.6.10.18"
-        runtime ":database-migration:1.4.0"
-        runtime ":jquery:1.11.1"
-
-        // Uncomment these to enable additional asset-pipeline capabilities
-        //compile ":sass-asset-pipeline:1.9.0"
-        //compile ":less-asset-pipeline:1.10.0"
-        //compile ":coffee-asset-pipeline:1.8.0"
-        //compile ":handlebars-asset-pipeline:1.3.0.3"
+        compile ':zipped-resources:1.0'
+        compile ':cached-resources:1.0'
+        compile ':resources:1.2.8'
+        compile ':yui-minify-resources:0.1.5'
+        compile ':cache-headers:1.1.5'
+        compile ':csv:0.3.1'
+        compile ':feeds:1.5'
+        compile ':restful-api:1.0.0'
+        compile ":mail:1.0.7"
+        compile ":tomcat:7.0.70"
     }
 }
